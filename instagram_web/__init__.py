@@ -17,3 +17,7 @@ def internal_server_error(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+
+@app.route("/sign_up")
+def sign_up():
+    return render_template('singUp.html')
