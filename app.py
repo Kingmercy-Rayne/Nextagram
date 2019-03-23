@@ -1,3 +1,4 @@
+from flask_wtf.csrf import CSRFProtect
 import os
 import config
 from flask import Flask
@@ -14,6 +15,11 @@ else:
     app.config.from_object("config.DevelopmentConfig")
 
 
+# I haven't added error response yet!!!
+csrf = CSRFProtect(app)
+
+
+
 @app.before_request
 def before_request():
     db.connect()
@@ -25,3 +31,4 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
+

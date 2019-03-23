@@ -1,0 +1,32 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <img src="{{img}}" alt="" style='width: 300px'>
+        </div>
+        <div class="col-6">
+            <form action="{{ url_for('upload_img') }} " method='POST' enctype="multipart/form-data">
+                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <label for="user_file">Upload Your File</label>
+                <br><br>
+                <input type="file" name="user_file">
+                <br><br>
+                <label for="description">Image description</label>
+                <input type="text" name="description">
+                <br><br>
+                <button type="submit" class="btn btn-primary">upload</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <!-- {% if current_user.is_authenticated %} -->
+    {% for img in images_path %}
+    <div class="row m-2">
+        <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
+    </div>.
+    {% endfor %}
+    <!-- {% endif %} -->
+</div>
+{% endblock %}

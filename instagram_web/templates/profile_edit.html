@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class="container p-3">
+    {% for error in errors if errors|length > 0 %}
+      <li>{{error}}</li>
+    {% endfor %}
+    <img src=" {{img}} " alt="img" style='width: 300px'>
+    <br><br>
+    <h2>Edit your profile</h2>
+    <form action="{{ url_for('profile_edit_form') }}" method="POST">
+        <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type='text' name='username' class="form-control" value="{{current_user.username}}"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<div class="container">
+        <h1>Edit Your Profile Picture</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
+            <label for="user_file">Upload Your File</label>
+            <br></br>
+            <input type="file" name="user_file">
+            <br></br>
+            <button type="submit">Upload</button>
+        </form>
+</div>
+{% endblock %}

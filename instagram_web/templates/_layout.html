@@ -18,7 +18,65 @@
     <title>{% block title %}{% endblock %}NEXTAGRAM</title>
   </head>
   <body>
+    <div class="container-fluid px-0">
+        <nav id='main-nav' class="navbar navbar-expand-md bg-dark navbar-dark ">
+          <div class="container-fluid">
+            <a href="index.html" class="navbar-brand">Nextagram</a>
+            <button class="navbar-toggler" data-toggle='collapse' data-target='#navbarCollapse'>
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id='navbarCollapse'>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <a href="/" class="nav-link">Users</a>
+                </li>
+                <li class="nav-item">
+                  {% if current_user.is_authenticated %}
+                  <a href="/user_profile" class="nav-link">My Profile</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                  {% if current_user.is_authenticated %}
+                  <a href="#" class="nav-link">Feed</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                  {% if current_user.is_authenticated %}
+                  <a href="{{ url_for('profile_edit')}}" class="nav-link">Edit User Profile</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                  {% if current_user.is_authenticated %}
+                  <a href="{{ url_for('logout')}}" class="nav-link">Logout</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                  {% if not current_user.is_authenticated %}
+                  <a href="{{ url_for('sign_in')}}" class="nav-link">Sign In</a>
+                  {% endif %}
+                </li>
+                <li class="nav-item">
+                  {% if not current_user.is_authenticated %}
+                  <a href="{{ url_for('sign_up')}}" class="nav-link">Sign Up</a>
+                  {% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
     {% block content %}
     {% endblock %}
+    </div>
   </body>
 </html>
