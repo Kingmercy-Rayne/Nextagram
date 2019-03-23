@@ -27,22 +27,31 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.get(user_id)
 
-app.register_blueprint(users_blueprint, url_prefix="/users")
+# what does it mean??????????????????????????????????????????
+# app.register_blueprint(users_blueprint, url_prefix="/users")
 
 
-
-
-
-@app.route("/")
+# main page
+@app.route("/users/")
 @login_required
 def home():
     users = User.select()
+    image = Image.select()
     users_list = list(users)
-    return render_template('home.html',users_list=users_list)
+    return render_template('home.html',users_list=users_list,image=image)
+
+# individual page
+@app.route('/users/<name>/')
+def users(name):
+    images = list(Image.select().join(User).where(User.username == name))
+    user = User.get_or_none(User.username == name)
+    return render_template('indivisual_user.html', images=images,user=user)
+
+
 
 
 # SIGN UP
-@app.route("/sign_up")
+@app.route("/user/new")
 def sign_up():
     return render_template('sign_up.html')
 
@@ -61,7 +70,7 @@ def sign_up_form():
 
         if u.save():
             flash("Successfully saved")
-            return redirect(url_for('sign_up'))
+            return redirect(url_for('/user/new'))
         else:
             return render_template('sign_up.html',username=request.form['username'],email=request.form['email'],password=request.form['password'],errors=u.errors)    
 
@@ -110,26 +119,19 @@ def sign_in_form():
         return render_template('sign_in.html')
 
 
-@app.route("/profile_edit")
-def profile_edit():
-    # objects= s3.list_objects(Bucket=S3_BUCKET)
-    # fi = objects('Key').get()
-    # import boto3
-    # s3 = boto3.resource('s3')
-    # s3.Bucket('mybucket').download_file('hello.txt', '/tmp/hello.txt')
+@app.route("/user/<id>/edit")
+def profile_edit(id):
     return render_template('profile_edit.html',img=current_user.profile_image_url)
 
-
-
-@app.route("/profile_edit_form", methods=["POST"])
-def profile_edit_form():
+@app.route("/profile_edit_name", methods=["POST"])
+def profile_edit_name():
     # breakpoint()
     u = (User.update({User.username: request.form['username']})).where(User.username==current_user.username)
 
     if not User.get_or_none(User.username==request.form['username']):
         if u.execute():
             flash("successfully updated")
-            return redirect(url_for("profile_edit"))
+            return redirect(url_for("/user/current_user.id/edit"))
         else:
             return render_template("profile_edit.html", username=request.form["username"])
     else:
@@ -151,7 +153,7 @@ def upload():
         # userp = current_user.picture = request.files.get("user_file").filename
         # userp.save()
         u.execute()
-        return redirect(url_for("profile_edit"))
+        return redirect(url_for("/user/<id>/edit"))
     except:
         flash("Something went wrong!!")
         return render_template("profile_edit.html")
@@ -165,18 +167,9 @@ def logout():
     return redirect(url_for('sign_in'))
 
 
-# USER PROFILE PAGE
-@app.route('/user_profile')
-@login_required
-def user_profile():
-    # breakpoint()
-    images = Image.select().where(Image.user_id == current_user.id)
-    path = list(images)
-    return render_template('user_profile.html',img=current_user.profile_image_url,images_path=path)
-
+# myprofile upload
 @app.route("/upload_img", methods=["POST"])
 def upload_img():
-    # breakpoint()
     try:
         file = request.files.get("user_file")
         s3.upload_fileobj(
@@ -195,19 +188,11 @@ def upload_img():
 
 
 
-
 #  error handler
 @app.errorhandler(404)
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template('404.html'), 404
-
 
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
-
-# @app.errorhandler(500)
-# def server_error(e):
-#     # note that we set the 404 status explicitly
-#     return render_template('500.html'), 500

@@ -9,13 +9,21 @@
 <div class="container">
   <div class="row">
     <div class="col-3">
-      {{ user.username }}
-      
-      <img src="{{user.profile_image_url}}" alt="">
+      <div>
+        {{ user.username }}
+        <img src="{{user.profile_image_url}}" alt="" style='width: 300px; height: 300px;'>
+      </div>
     </div>
-    <div class="col-9">
-
+    <div class="col-9 d-flex">
+      {% for img in image %}
+      {% if img.user_id == user.id %}
+      <div class="row m-2">
+          <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
+      </div>
+      {% endif %}
+      {% endfor %}
     </div>
+    <a href="/users/{{user.username}}" class="btn btn-primary">See More</a>
   </div>
 </div>
 {% endfor %}

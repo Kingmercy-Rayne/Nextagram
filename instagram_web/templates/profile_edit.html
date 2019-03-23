@@ -7,7 +7,7 @@
     <img src=" {{img}} " alt="img" style='width: 300px'>
     <br><br>
     <h2>Edit your profile</h2>
-    <form action="{{ url_for('profile_edit_form') }}" method="POST">
+    <form action="{{ url_for('profile_edit_name') }}" method="POST">
         <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
         <div class="form-group">
             <label for="username">Username:</label>
