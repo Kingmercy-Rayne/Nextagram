@@ -1,11 +1,13 @@
 {% extends "_layout.html" %}
 {% block content %}
+{{ name }}
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <img src="{{img}}" alt="" style='width: 300px'>
+            <img src="{{user.profile_image_url}}" alt="" style='width: 300px'>
         </div>
         <div class="col-6">
+            {% if current_user.username == user.username %}
             <form action="{{ url_for('upload_img') }} " method='POST' enctype="multipart/form-data">
                 <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
                 <label for="user_file">Upload Your File</label>
@@ -17,16 +19,20 @@
                 <br><br>
                 <button type="submit" class="btn btn-primary">upload</button>
             </form>
+            {% endif %}
         </div>
     </div>
 </div>
 <div class="container mt-4">
     <!-- {% if current_user.is_authenticated %} -->
-    {% for img in images_path %}
+    {% for img in images %}
     <div class="row m-2">
         <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
-    </div>.
+    </div>
+    <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
+    <!-- <button class="donate btn btn-primary" type="button" data-toggle='modal' data-target='#paymentModal'>Donate</button> -->
     {% endfor %}
     <!-- {% endif %} -->
 </div>
+
 {% endblock %}

@@ -7,7 +7,7 @@ from models.user import User
 class Image(BaseModel):
    description = pw.TextField()
    img_path = pw.CharField(null = True)
-   user = pw.ForeignKeyField(User, backref='products')
+   user = pw.ForeignKeyField(User, backref='')
 
    @hybrid_property
    def image_path(self):

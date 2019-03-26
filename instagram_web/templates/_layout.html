@@ -36,13 +36,13 @@
                   {% endif %}
                 </li>
                 <li class="nav-item">
-                  {% if current_user.is_authenticated %}
+                  {% if current_user.is_authenticated %} 
                   <a href="#" class="nav-link">Feed</a>
                   {% endif %}
                 </li>
                 <li class="nav-item">
                   {% if current_user.is_authenticated %}
-                  <a href="/user/{{current_user.id}}/edit" class="nav-link">Edit User Profile</a>
+                  <a href="/users/{{current_user.id}}/edit" class="nav-link">Edit User Profile</a>
                   {% endif %}
                 </li>
                 <li class="nav-item">
@@ -52,12 +52,12 @@
                 </li>
                 <li class="nav-item">
                   {% if not current_user.is_authenticated %}
-                  <a href="{{ url_for('sign_in')}}" class="nav-link">Sign In</a>
+                  <a href="sessions/new" class="nav-link">Sign In</a>
                   {% endif %}
                 </li>
                 <li class="nav-item">
                   {% if not current_user.is_authenticated %}
-                  <a href="{{ url_for('sign_up')}}" class="nav-link">Sign Up</a>
+                  <a href="/users/new" class="nav-link">Sign Up</a>
                   {% endif %}
                 </li>
               </ul>
