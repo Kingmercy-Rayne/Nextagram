@@ -20,11 +20,27 @@
                 <button type="submit" class="btn btn-primary">upload</button>
             </form>
             {% endif %}
+            {% if not current_user.username == user.username and not follow%}
+            <form action={{ url_for('users.follow', username=username) }}  method='POST' enctype="multipart/form-data">
+                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Follow</button>
+            </form>
+            {% elif not current_user.username == user.username and not follow.approval %}
+            <form action={{ url_for('users.unfollow', username=username) }}  method='POST' enctype="multipart/form-data">
+                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Follow Requested</button>
+            </form>
+            {% elif not current_user.username == user.username and follow %}
+            <form action={{ url_for('users.unfollow', username=username) }}  method='POST' enctype="multipart/form-data">
+                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Unfollow</button>
+            </form>
+            {% endif %}
         </div>
     </div>
 </div>
 <div class="container mt-4">
-    <!-- {% if current_user.is_authenticated %} -->
+    {% if not user.private %}
     {% for img in images %}
     <div class="row m-2">
         <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
@@ -32,7 +48,9 @@
     <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
     <!-- <button class="donate btn btn-primary" type="button" data-toggle='modal' data-target='#paymentModal'>Donate</button> -->
     {% endfor %}
-    <!-- {% endif %} -->
+    {% else %}
+    <p>This profile is private</p>
+    {% endif %}
 </div>
 
 {% endblock %}

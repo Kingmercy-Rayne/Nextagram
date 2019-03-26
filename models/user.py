@@ -1,6 +1,6 @@
 from models.base_model import BaseModel
-from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
+from flask_login import UserMixin
 import peewee as pw
 
 class User(BaseModel, UserMixin):
@@ -40,3 +40,20 @@ class User(BaseModel, UserMixin):
             self.errors.append('The email already exists!!')
         if duplicate_username:
             self.errors.append("The username already exists!!")
+
+    def idols(self):
+        idol = User.alias()
+        return (idol.select()
+        .join(Following, on=(idol.id == Following.idol_id))
+        .where(Following.fan_id == self.id))
+
+    def followers(self):
+        follower = User.alias()
+        return (follower.select()
+        .join(Following, on=(follower.id == Following.fan_id))
+        .where(Following.idol_id == self.id))
+
+class Following(BaseModel):
+    fan = pw.ForeignKeyField(User)
+    idol = pw.ForeignKeyField(User)
+    approval = pw.BooleanField(default=False)

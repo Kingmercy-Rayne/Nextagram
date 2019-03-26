@@ -37,7 +37,7 @@
                 </li>
                 <li class="nav-item">
                   {% if current_user.is_authenticated %} 
-                  <a href="#" class="nav-link">Feed</a>
+                  <a href="/users/{{current_user.username}}/feed" class="nav-link">Feed</a>
                   {% endif %}
                 </li>
                 <li class="nav-item">

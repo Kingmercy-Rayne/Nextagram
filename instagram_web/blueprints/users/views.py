@@ -7,7 +7,7 @@ from flask_assets import Environment, Bundle
 from werkzeug.security import generate_password_hash,check_password_hash
 import re
 # we have to specify which file and which data
-from models.user import User
+from models.user import User, Following
 from models.image import Image
 from helpers import s3
 from config import S3_BUCKET
@@ -75,7 +75,45 @@ def show(username):
     # client_token = gateway.client_token.generate()
     images = list(Image.select().join(User).where(User.username == username))
     user = User.get_or_none(User.username == username)
-    return render_template('users/show.html', images=images,user=user)
+    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
+    return render_template('users/show.html', images=images,user=user,username=username,follow=follow)
+
+
+@users_blueprint.route('/<username>/follow', methods=["POST"])
+def follow(username):
+    images = list(Image.select().join(User).where(User.username == username))
+    user = User.get_or_none(User.username == username)
+    idol_id = user.id
+    if user.private:
+        f = Following(fan_id=current_user.id, idol_id=idol_id)
+        f.save()
+    else:
+        f = Following(fan_id=current_user.id, idol_id=idol_id,approval=True)
+        f.save()
+    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
+    return render_template('users/show.html', images=images,user=user,username=username,follow=follow)
+
+
+@users_blueprint.route('/<username>/unfollow', methods=["POST"])
+def unfollow(username):
+    images = list(Image.select().join(User).where(User.username == username))
+    user = User.get_or_none(User.username == username)
+    idol_id = user.id
+    uf = Following.delete().where(Following.fan_id==current_user.id and Following.idol_id==idol_id)
+    uf.execute()
+    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
+    return render_template('users/show.html', images=images,user=user,username=username,follow=follow)
+
+
+
+
+@users_blueprint.route('/<username>/feed', methods=["GET"])
+@login_required
+def show_feed(username):
+    users = User.select().join(Following, on=(User.id == Following.idol_id)).where(Following.fan_id == current_user.id and Following.approval==True)
+    image = Image.select()
+    # approval = Following.select()
+    return render_template('users/show_feed.html',users_list=users,image=image)
 
 
 
@@ -83,8 +121,6 @@ def show(username):
 def edit(id):
     return render_template('users/edit.html',img=current_user.profile_image_url)
     
-
-
 
 @app.route("/profile_edit_name", methods=["POST"])
 def profile_edit_name():
