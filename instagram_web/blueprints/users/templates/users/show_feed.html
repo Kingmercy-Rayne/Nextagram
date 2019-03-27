@@ -5,26 +5,29 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-{% for user in users_list %}
-<div class="container">
-  <div class="row">
-    <div class="col-3">
+{% for img in image %}
+<div class="container my-2">
+  <div class="row d-flex justify-content-center">
       <div>
-        {{ user.username }}
-        <img src="{{user.profile_image_url}}" alt="" style='width: 300px; height: 300px;'>
-      </div>
+    {% for user in users_list %}
+    {% if img.user_id == user.id %}
+    <div class="mb-3 border border-2 mb-5 rounded" style="border-width:3px !important" >
+        <div class="bg-light">
+            <div class="d-inline-block" style='width: 34px; height: 34px'>
+                <img src="{{user.profile_image_url}}" alt="" class="border border-1 border-primary img-fluid rounded-circle d-inline img-responsive p-1">
+            </div>
+
+            <div class="d-inline">
+                <p class="d-inline">{{ user.username }}</p>
+            </div>
+        </div>
+        <img src="{{img.image_path}}" alt="" class="border border-primary img-fluid" style='max-width: 600px; max-height: 600px'>
     </div>
-    <div class="col-9 d-flex">
-      {% for img in image %}
-      {% if img.user_id == user.id %}
-      <div class="row m-2">
-          <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
-      </div>
-      {% endif %}
-      {% endfor %}
+    {% endif %}
+    {% endfor %}
     </div>
-    <a href="/users/{{user.username}}" class="btn btn-primary">See More</a>
   </div>
 </div>
 {% endfor %}
 {% endblock %}
+

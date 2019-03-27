@@ -72,12 +72,22 @@ def create():
 
 @users_blueprint.route('/<username>/', methods=["GET"])
 def show(username):
+    # breakpoint()
     # client_token = gateway.client_token.generate()
     images = list(Image.select().join(User).where(User.username == username))
-    user = User.get_or_none(User.username == username)
-    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
-    return render_template('users/show.html', images=images,user=user,username=username,follow=follow)
 
+    num_img = len(images)
+
+    num_follow = len(Following.select().where(current_user.id == Following.fan_id))
+
+    num_followed = len(Following.select().where(current_user.id == Following.idol_id))
+
+    user = User.get_or_none(User.username == username)
+
+    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
+    return render_template('users/show.html', images=images,user=user,username=username,follow=follow,num_img=num_img, num_follow=num_follow, num_followed=num_followed)
+
+# subquery = Tweet.select(fn.COUNT(Tweet.id)).where(Tweet.user == User.id)
 
 @users_blueprint.route('/<username>/follow', methods=["POST"])
 def follow(username):
@@ -122,22 +132,30 @@ def edit(id):
     return render_template('users/edit.html',img=current_user.profile_image_url)
     
 
-@app.route("/profile_edit_name", methods=["POST"])
-def profile_edit_name():
+@app.route("/profile_edit", methods=["POST"])
+def profile_edit():
     # breakpoint()
-    u = (User.update({User.username: request.form['username']})).where(User.username==current_user.username)
-
-    if not User.get_or_none(User.username==request.form['username']):
+    if request.form.get("private"):
+        u = (User.update({User.username: request.form['username'],User.private: True })).where(User.username==current_user.username)
         if u.execute():
             flash("successfully updated")
-            return redirect(url_for("users.edit", id=current_user.id))
-            
+            return redirect(url_for("users.edit",img=current_user.profile_image_url, id=current_user.id,))
+        
         else:
             flash("failed")
-            return render_template("users/edit.html", username=request.form["username"])
+            return render_template("users/edit.html",img=current_user.profile_image_url,id=current_user.id, username=request.form["username"])
     else:
-        flash("failed")
-        return render_template("users/edit.html", username=request.form["username"])
+        u = (User.update({User.username: request.form['username'],User.private: False })).where(User.username==current_user.username)
+        if u.execute():
+            flash("successfully updated")
+            return redirect(url_for("users.edit",img=current_user.profile_image_url, id=current_user.id,))
+        
+        else:
+            flash("failed")
+            return render_template("users/edit.html",img=current_user.profile_image_url,id=current_user.id, username=request.form["username"])
+
+    
+
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -155,17 +173,19 @@ def upload():
         # userp = current_user.picture = request.files.get("user_file").filename
         # userp.save()
         u.execute()
-        return redirect(url_for("/<id>/edit"))
+        return redirect(url_for("users.edit" ,img=current_user.profile_image_url, id=current_user.id))
     except:
         flash("Something went wrong!!")
-        return render_template("edit.html")
+        return render_template("users/edit.html",img=current_user.profile_image_url, id=current_user.id)
 
 
 # myprofile upload
-@app.route("/upload_img", methods=["POST"])
-def upload_img():
+@app.route("/<username>/upload_img", methods=["POST"])
+def upload_img(username):
     images = list(Image.select().join(User).where(User.username == current_user.username))
     user = User.get_or_none(User.username == current_user.username)
+    follow = Following.get_or_none(Following.fan_id == current_user.id and Following.idol_id == user.id)
+
     try:
         file = request.files.get("user_file")
         s3.upload_fileobj(
@@ -177,8 +197,10 @@ def upload_img():
 
         p = Image(description=request.form['description'],user_id=current_user.id,img_path=file.filename)
         p.save()
-        return render_template("users/show.html", images=images,user=user)
+        return redirect(url_for("users.show", images=images,user=user,username=username,follow=follow))
+
     except:
+        return 'failed'
         flash("Something went wrong!!")
         return render_template("users/show.html", images=images,user=user)
 

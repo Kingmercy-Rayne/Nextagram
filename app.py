@@ -3,6 +3,10 @@ import os
 import config
 from flask import Flask
 from models.base_model import db
+from redis import Redis
+from rq import Queue
+
+q = Queue(connection=Redis())
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')

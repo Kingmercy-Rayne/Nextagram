@@ -1,26 +1,36 @@
 {% extends "_layout.html" %}
 {% block content %}
 {{ name }}
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <img src="{{user.profile_image_url}}" alt="" style='width: 300px'>
+<div class="container-fluid p-2 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 p-3 d-flex justify-content-center">
+                <div class="d-flex" style="width: 150px; height: 150px">
+                    <img src="{{user.profile_image_url}}" alt="" class="img-fluid img-responsive rounded-circle">
+                </div>
+            </div>
+            <div class="col-8 d-flex align-items-start">
+                <div class="container">
+                    <div class="row p-3">
+                        <p class="lead font-weight-bold">{{user.username}}<a class="btn btn-outline-secondary ml-5" href="/users/{{current_user.id}}/edit">Edit Profile</a></p>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <ul class="pl-0" >
+                            <li class="d-inline mx-3">{{num_img}} posts</li>
+                            <li class="d-inline mx-3">{{num_followed}} followers</li>
+                            <li class="d-inline mx-3">{{num_follow}} following</li>
+                        </ul>
+                    </div>
+                </div>
+    
+            </div>
         </div>
-        <div class="col-6">
+        <div class="row d-flex justify-content-end p-3 border-top border-secondary">
             {% if current_user.username == user.username %}
-            <form action="{{ url_for('upload_img') }} " method='POST' enctype="multipart/form-data">
-                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
-                <label for="user_file">Upload Your File</label>
-                <br><br>
-                <input type="file" name="user_file">
-                <br><br>
-                <label for="description">Image description</label>
-                <input type="text" name="description">
-                <br><br>
-                <button type="submit" class="btn btn-primary">upload</button>
-            </form>
-            {% endif %}
-            {% if not current_user.username == user.username and not follow%}
+            <button class="btn btn-primary" data-toggle='modal' data-target='#contactModal'>Upload Pictures</button>
+
+
+            {% elif not current_user.username == user.username and not follow%}
             <form action={{ url_for('users.follow', username=username) }}  method='POST' enctype="multipart/form-data">
                 <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary">Follow</button>
@@ -38,19 +48,53 @@
             {% endif %}
         </div>
     </div>
-</div>
-<div class="container mt-4">
+    
+    <!-- imgs section -->
+    <div class="container mt-4">
     {% if not user.private %}
-    {% for img in images %}
     <div class="row m-2">
-        <img src="{{img.image_path}}" alt="" style='width: 300px; height: 300px;' class="border border-primary">
-    </div>
-    <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
-    <!-- <button class="donate btn btn-primary" type="button" data-toggle='modal' data-target='#paymentModal'>Donate</button> -->
+    {% for img in images %}
+        <div class="col-4 mb-3">
+            <img src="{{img.image_path}}" alt=""  class="border border-primary img-fluid">
+            {% if not current_user.username == user.username %}
+            <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
+            {% endif %}
+        </div>
     {% endfor %}
     {% else %}
-    <p>This profile is private</p>
+        <p>This profile is private</p>
     {% endif %}
+    </div>
 </div>
+
+
+  <!-- contact modal -->
+  <div class="modal fade text-dark" id="contactModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Upload Your Beautiful Picture</h5>
+              <button class="close" data-dismiss='modal'>
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                 <form action={{ url_for('upload_img' , username=username) }}  method='POST' enctype="multipart/form-data">
+                    <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <label for="user_file">Upload your file</label>
+                        <br><br>
+                        <input type="file"  name="user_file">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Image description</label>
+                        <textarea type='text' name="description" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
 {% endblock %}

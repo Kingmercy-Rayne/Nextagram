@@ -4,28 +4,51 @@
     {% for error in errors if errors|length > 0 %}
       <li>{{error}}</li>
     {% endfor %}
-    <img src=" {{img}} " alt="img" style='width: 300px'>
+    <div class="d-flex flex-column" style="height: 300px; width: 300px">
+        <img src=" {{img}} " alt="img" class="img-fluid img-responsive">
+        <button class="btn btn-secondary" data-toggle='modal' data-target='#contactModal'>Upload Pictures</button>
+    </div>
     <br><br>
     <h2>Edit your profile</h2>
-    <form action="{{ url_for('profile_edit_name') }}" method="POST">
+    <form action="{{ url_for('profile_edit') }}" method="POST">
         <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
         <div class="form-group">
             <label for="username">Username:</label>
             <input type='text' name='username' class="form-control" value="{{current_user.username}}"/>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group ml-4">
+            <input type="checkbox" name="private" id="private" class="form-check-input">
+            <label for="form-check-label" for='private'>Make Private</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
 </div>
-<div class="container">
-        <h1>Edit Your Profile Picture</h1>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
-            <label for="user_file">Upload Your File</label>
-            <br></br>
-            <input type="file" name="user_file">
-            <br></br>
-            <button type="submit">Upload</button>
-        </form>
-</div>
+
+<!-- contact modal -->
+<div class="modal fade text-dark" id="contactModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Upload Your Beautiful Picture</h5>
+              <button class="close" data-dismiss='modal'>
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                 <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                    <div class="form-group">
+                            <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
+                            <label for="user_file">Upload Your File</label>
+                    </div>
+                    <div class="form-group">
+                            <input type="file" name="user_file">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}
 
