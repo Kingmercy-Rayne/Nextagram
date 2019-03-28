@@ -1,6 +1,7 @@
 from app import app
 import instagram_api
 import instagram_web
+import os
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=os.environ.get("PORT", "5000"))
