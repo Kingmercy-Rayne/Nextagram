@@ -52,22 +52,22 @@ def create():
 
         if u.save():
             flash("Successfully saved")
-            return redirect(url_for('/new'))
+            return redirect(url_for('sessions.new'))
         else:
-            return render_template('new.html',username=request.form['username'],email=request.form['email'],password=request.form['password'],errors=u.errors)    
+            return render_template('users/new.html',username=request.form['username'],email=request.form['email'],password=request.form['password'],errors=u.errors)    
 
     elif not result and result_email:
         flash("password must be longer than 6")
-        return render_template('new.html',username=request.form['username'],email=request.form['email'],password=request.form['password']) 
+        return render_template('users/new.html',username=request.form['username'],email=request.form['email'],password=request.form['password']) 
 
     elif not result_email and result:
         flash("invalid email")
-        return render_template('new.html',username=request.form['username'],email=request.form['email'],password=request.form['password']) 
+        return render_template('users/new.html',username=request.form['username'],email=request.form['email'],password=request.form['password']) 
     
     else:
         flash("password must be longer than 6")
         flash("invalid email")
-        return render_template('new.html',username=request.form['username'],email=request.form['email'],password=request.form['password'])     
+        return render_template('users/new.html',username=request.form['username'],email=request.form['email'],password=request.form['password'])     
 
 
 @users_blueprint.route('/<username>/', methods=["GET"])

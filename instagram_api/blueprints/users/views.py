@@ -5,7 +5,7 @@ import os
 from flask_login import LoginManager,login_required,current_user,login_user,logout_user
 from models.user import User
 from models.image import Image
-from app import q
+from rqueue import q
 
 users_api_blueprint = Blueprint('users_api',
                              __name__,
@@ -15,24 +15,24 @@ users_api_blueprint = Blueprint('users_api',
 def index():
     return "USERS API"
 
-
+                                
 # sendiung email API
 @users_api_blueprint.route('<img_id>/send_email', methods=['GET','POST'])
 def send_email(img_id):
     # breakpoint()
     img = Image.get_or_none(Image.id == img_id)
     user = User.get_or_none(User.id == img.user_id)
-    q.enqueue(send, user)
+    q.enqueue(send, user.email)
     return redirect(url_for('donation.new_checkout',img_id=img_id))
 
-def send(user):
+def send(email):
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
     data = {
     "personalizations": [
         {
         "to": [
             {
-            "email": user.email
+            "email": email
             }
         ],
         "subject": "Sending with SendGrid is Fun"

@@ -56,7 +56,7 @@ def update(id):
 # SIGN IN
 @app.route("/sign_in")
 def sign_in():
-    return render_template('sign_in.html')
+    return render_template('sessions/new.html')
 
 @app.route("/sign_in_form" , methods=["POST"])
 def sign_in_form():
@@ -77,11 +77,11 @@ def sign_in_form():
 
         else:
             flash('login failed')
-            return render_template('sessions.new.html')
+            return render_template('sessions/new.html')
     
     else:
         flash('login failed')
-        return render_template('sessions.new.html')
+        return render_template('sessions/new.html')
 
 
 @app.route("/google_sign_in", methods=["GET","POST"])
