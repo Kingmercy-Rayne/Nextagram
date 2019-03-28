@@ -10,6 +10,7 @@ Click==7.0
 cryptography==2.6.1
 docutils==0.14
 Flask==1.0.2
+Flask-Cors==3.0.7
 Flask-WTF==0.14.2
 idna==2.8
 itsdangerous==1.1.0
