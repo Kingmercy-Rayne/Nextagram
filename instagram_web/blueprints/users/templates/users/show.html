@@ -32,17 +32,17 @@
 
             {% elif not current_user.username == user.username and not follow%}
             <form action={{ url_for('users.follow', username=username) }}  method='POST' enctype="multipart/form-data">
-                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <input type="hidden" required name='csrf_token' value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary">Follow</button>
             </form>
             {% elif not current_user.username == user.username and not follow.approval %}
             <form action={{ url_for('users.unfollow', username=username) }}  method='POST' enctype="multipart/form-data">
-                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <input type="hidden" required name='csrf_token' value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary">Follow Requested</button>
             </form>
             {% elif not current_user.username == user.username and follow %}
             <form action={{ url_for('users.unfollow', username=username) }}  method='POST' enctype="multipart/form-data">
-                <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                <input type="hidden" required name='csrf_token' value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary">Unfollow</button>
             </form>
             {% endif %}
@@ -80,15 +80,15 @@
             </div>
             <div class="modal-body">
                  <form action={{ url_for('upload_img' , username=username) }}  method='POST' enctype="multipart/form-data">
-                    <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+                    <input type="hidden" required name='csrf_token' value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="user_file">Upload your file</label>
                         <br><br>
-                        <input type="file"  name="user_file">
+                        <input type="file" required  name="user_file">
                     </div>
                     <div class="form-group">
                         <label for="description">Image description</label>
-                        <textarea type='text' name="description" class="form-control"></textarea>
+                        <textarea type='text' required name="description" class="form-control"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Upload</button>
                 </form>

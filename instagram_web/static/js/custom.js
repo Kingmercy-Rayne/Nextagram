@@ -1,0 +1,1 @@
+TweenMax.to(document.getElementById('tail'),2,{transformOrigin: "left bottom",rotation:10,yoyo:true,repeat:-1,ease: Power2.easeInOut});

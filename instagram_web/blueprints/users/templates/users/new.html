@@ -8,15 +8,15 @@
         <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
         <div class="form-group">
             <label for="username">Username:</label>
-            <input type='text' name='username' class="form-control" value="{{username}}"/>
+            <input type='text' name='username' required class="form-control" value="{{username}}"/>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type='text' name='email' class="form-control" value="{{email}}"/>
+            <input type='text' name='email' required class="form-control" value="{{email}}"/>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type='text' name='password' class="form-control" value="{{password}}" />
+            <input type='text' name='password' required class="form-control" value="{{password}}" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

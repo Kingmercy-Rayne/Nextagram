@@ -14,15 +14,16 @@
         <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
         <div class="form-group">
             <label for="username">Username:</label>
-            <input type='text' name='username' class="form-control" value="{{current_user.username}}"/>
+            <input type='text' name='username' required class="form-control" value="{{current_user.username}}"/>
         </div>
         <div class="form-group ml-4">
-            <input type="checkbox" name="private" id="private" class="form-check-input">
+            <input type="checkbox" name="private" required id="private" class="form-check-input">
             <label for="form-check-label" for='private'>Make Private</label>
         </div>
         <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
 </div>
+
 
 <!-- contact modal -->
 <div class="modal fade text-dark" id="contactModal">
@@ -42,7 +43,7 @@
                             <label for="user_file">Upload Your File</label>
                     </div>
                     <div class="form-group">
-                            <input type="file" name="user_file">
+                            <input required type="file" name="user_file">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Upload</button>
                 </form>

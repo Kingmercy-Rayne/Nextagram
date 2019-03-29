@@ -40,6 +40,11 @@ app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 app.register_blueprint(donation_blueprint, url_prefix="/donation")
 
 
+@app.route("/")
+def home():
+    return render_template('home.html')
+
+
 #  error handler
 @app.errorhandler(404)
 def page_not_found(e):
@@ -48,3 +53,4 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
