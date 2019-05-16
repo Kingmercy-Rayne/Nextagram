@@ -1,4 +1,4 @@
-#This is a app, imitate Instagram
+##This is a app, imitate Instagram
 
 I used Flask Python for both front and back end.
 
