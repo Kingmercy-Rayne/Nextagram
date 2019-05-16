@@ -1,9 +1,9 @@
-##This is a app, imitate Instagram
+## This is a app, imitate Instagram
 
 I used Flask Python for both front and back end.
 
 
-##features
+## features
 
 1.transaction is dealt with braintree
 
