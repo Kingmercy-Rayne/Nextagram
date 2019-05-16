@@ -27,29 +27,29 @@
 
 <!-- contact modal -->
 <div class="modal fade text-dark" id="contactModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Upload Your Beautiful Picture</h5>
-              <button class="close" data-dismiss='modal'>
-                <span>&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                 <form action="/upload" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
-                    <div class="form-group">
-                            <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
-                            <label for="user_file">Upload Your File</label>
-                    </div>
-                    <div class="form-group">
-                            <input required type="file" name="user_file">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
-                </form>
-            </div>
-          </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Your Beautiful Picture</h5>
+        <button class="close" data-dismiss='modal'>
+          <span>&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+              <div class="form-group">
+                      <input type="hidden" name='csrf_token' value="{{ csrf_token() }}"/>
+                      <label for="user_file">Upload Your File</label>
+              </div>
+              <div class="form-group">
+                      <input required type="file" name="user_file">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Upload</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 

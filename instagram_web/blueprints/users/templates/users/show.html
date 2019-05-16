@@ -21,7 +21,7 @@
                             <li class="d-inline mx-3">{{num_follow}} following</li>
                         </ul>
                     </div>
-                </div>
+              w  </div>
     
             </div>
         </div>
@@ -51,21 +51,21 @@
     
     <!-- imgs section -->
     <div class="container mt-4">
-    {% if not user.private %}
-    <div class="row m-2">
-    {% for img in images %}
-        <div class="col-4 mb-3">
-            <img src="{{img.image_path}}" alt=""  class="border border-primary img-fluid">
-            {% if not current_user.username == user.username %}
-            <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
-            {% endif %}
+        {% if not user.private %}
+        <div class="row m-2">
+        {% for img in images %}
+            <div class="col-4 mb-3">
+                <img src="{{img.image_path}}" alt=""  class="border border-primary img-fluid">
+                {% if not current_user.username == user.username %}
+                <a href = {{ url_for('donation.new_checkout' , img_id=img.id) }} class="btn btn-primary">Donation</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% else %}
+            <p>This profile is private</p>
+        {% endif %}
         </div>
-    {% endfor %}
-    {% else %}
-        <p>This profile is private</p>
-    {% endif %}
     </div>
-</div>
 
 
   <!-- contact modal -->

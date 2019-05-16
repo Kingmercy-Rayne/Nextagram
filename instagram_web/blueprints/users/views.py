@@ -43,10 +43,13 @@ def create():
     hashed_password = generate_password_hash(user_password)
 
     pattern_password = '\w{6,}'
-    result = re.search(pattern_password, user_password)
+    result = re.search(pattern_password, user_password)\
+
     pattern_email = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]'
     result_email = re.search(pattern_email,request.form['email'])
     
+    #todo i can write this code to show error inside of model users 
+
     if (result and result_email):
         u = User(username=request.form['username'],email=request.form['email'],password=hashed_password)
 

@@ -3,6 +3,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from flask_login import UserMixin
 import peewee as pw
 
+
 class User(BaseModel, UserMixin):
     username = pw.CharField(unique=True)
     email = pw.CharField(unique=True)
@@ -17,14 +18,14 @@ class User(BaseModel, UserMixin):
     def is_authenticated(self):
         return True
 
-    def is_active(self):
-        return True
+    # def is_active(self):
+    #     return True
 
-    def is_anonymous(self):
-        return False
+    # def is_anonymous(self):
+    #     return False
 
-    def get_id(self):
-        return (self.id)
+    # def get_id(self):
+    #     return (self.id)
 
     def validate(self):
         duplicate_email = User.get_or_none(User.email==self.email)
@@ -57,3 +58,5 @@ class Following(BaseModel):
     fan = pw.ForeignKeyField(User)
     idol = pw.ForeignKeyField(User)
     approval = pw.BooleanField(default=False)
+
+

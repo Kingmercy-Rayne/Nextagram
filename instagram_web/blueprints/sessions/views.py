@@ -87,13 +87,14 @@ def sign_in_form():
 @app.route("/google_sign_in", methods=["GET","POST"])
 def google_sign_in():
     redirect_url = url_for('authorize', _external= True)
+    # let users go to google page to select an account and go to redirect_url
     return oauth.google.authorize_redirect(redirect_url)
 
 
 @app.route("/authorize", methods=["GET","POST"])
 def authorize():
     token = oauth.google.authorize_access_token()
-    email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+    email = oauth.googQle.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
 
     user = User.get_or_none(User.email == email)
     # user = User.query.filter_by(email=email).first()
@@ -104,12 +105,6 @@ def authorize():
     else:
         return render_template('sessions.new.html')
     
-    
-
-
-
-
-
 
 
 @app.route('/logout')

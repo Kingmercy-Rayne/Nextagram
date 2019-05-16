@@ -1,3 +1,22 @@
+**This is a app, immitate Instagram
+
+I used Flask Python for both front and back end.
+
+
+**features
+
+1.transaction is dealt with braintree
+
+2.using Amazon S3 to deal with upload pictures
+
+3.implemented email notification
+
+
+
+
+
+
+
 # Flask Nextagram Template
 
 version 0.0.1 (alpha)

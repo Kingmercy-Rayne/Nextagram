@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-from flask import Blueprint, render_template
 from app import app
 from flask import render_template,redirect,request,url_for,session,flash,escape
 from flask_login import LoginManager,login_required,current_user,login_user,logout_user
@@ -48,31 +47,7 @@ donation_blueprint = Blueprint('donation',
 def new_checkout(img_id):
     client_token = generate_client_token()
     return render_template('donation/new.html', client_token=client_token,img_id=img_id)
-
-
-@donation_blueprint.route('/', methods=['POST'])
-def create():
-    pass
-
-
-@donation_blueprint.route('/<username>', methods=["GET"])
-def show(username):
-    pass
-
-
-@donation_blueprint.route('/', methods=["GET"])
-def index():
-    return "USERS"
-
-
-@donation_blueprint.route('/<id>/edit', methods=['GET'])
-def edit(id):
-    pass
-
-
-@donation_blueprint.route('/<id>', methods=['POST'])
-def update(id):
-    pass
+``
 
 
 
@@ -95,3 +70,27 @@ def create_checkout(img_id):
         # for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message))
         # return redirect(url_for('new_checkout'))
 
+
+# @donation_blueprint.route('/', methods=['POST'])
+# def create():
+#     pass
+
+
+# @donation_blueprint.route('/<username>', methods=["GET"])
+# def show(username):
+#     pass
+
+
+# @donation_blueprint.route('/', methods=["GET"])
+# def index():
+#     return "USERS"
+
+
+# @donation_blueprint.route('/<id>/edit', methods=['GET'])
+# def edit(id):
+#     pass
+
+
+# @donation_blueprint.route('/<id>', methods=['POST'])
+# def update(id):
+#     pass
