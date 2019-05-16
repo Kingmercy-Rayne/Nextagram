@@ -1,4 +1,4 @@
-##This is a app, imitate Instagram
+#This is a app, imitate Instagram
 
 I used Flask Python for both front and back end.
 
@@ -17,9 +17,8 @@ I used Flask Python for both front and back end.
 
 
 
-# Flask Nextagram Template
 
-version 0.0.1 (alpha)
+
 
 ## Development
 
